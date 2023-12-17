@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import SignupValidation from "./SignupValidation";
+import SignupValidation from "./Validation";
 import axios from "axios";
 import Login from "./Login";
 import "./App.css";
@@ -32,7 +32,7 @@ const Signup = () => {
       axios
         .post("https://yt5k4d-8080.csb.app/signup", values)
         .then((res) => {
-          navigate("/login");
+          navigate("/");
         })
         .catch((err) => console.log(err));
     }
@@ -102,10 +102,13 @@ const Signup = () => {
             )}
           </div>
           <div className="mb-3">
-            <button type="submit" className="btn btn-success w-100">
+            <button type="submit" className="btn btn-success w-100 mb-1">
               Submit
             </button>
-            <p>You agree to our terms and Conditions</p>
+            <p>
+              <input type="checkbox" className="border" /> You agree to our
+              terms and Conditions
+            </p>
             <Link
               to="/login"
               className="btn btn-default bg-light border text-decoration-none w-100"

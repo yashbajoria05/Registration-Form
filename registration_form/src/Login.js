@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LoginValidation from "./LoginValidation";
+import LoginValidation from "./Validation";
 import axios from "axios";
 import Signup from "./Signup";
 import "./App.css";
@@ -35,6 +35,7 @@ const Login = () => {
         })
         .catch((err) => console.log(err));
     }
+    event.target.reset();
   };
 
   return (
@@ -73,10 +74,12 @@ const Login = () => {
             <button type="submit" className="btn btn-success w-100">
               Submit
             </button>
-            <p>You agree to our terms and Conditions</p>
+            <div className="mt-1">
+              <input type="checkbox" /> You agree to our terms and Conditions
+            </div>
             <Link
               to="/signup"
-              className="btn btn-default bg-light border text-decoration-none w-100"
+              className="btn btn-default bg-light mt-3 border text-decoration-none w-100"
               element={<Signup />}
             >
               Sign Up
