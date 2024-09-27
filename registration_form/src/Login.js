@@ -5,7 +5,7 @@ import axios from "axios";
 import Login from "./Login";
 import "./App.css";
 
-const Signup = () => {
+const Login = () => {
   const [values, setValues] = useState({
     first_name: "",
     last_name: "",
@@ -45,32 +45,6 @@ const Signup = () => {
     <div className="signup_container bg-primary bg-gradient">
       <div className="signup_box bg-light-subtle">
         <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label htmlFor="first_name" className="form-label">
-              First Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="first_name"
-              placeholder="Yash"
-              onChange={handleChange}
-            />
-            <span className="text-danger">{error.first_name}</span>
-          </div>
-          <div className="mb-3">
-            <label htmlFor="last_name" className="form-label">
-              Last Name
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              name="last_name"
-              placeholder="Bajoria"
-              onChange={handleChange}
-            />
-            <span className="text-danger">{error.last_name}</span>
-          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email address
@@ -120,4 +94,4 @@ const Signup = () => {
     </div>
   );
 };
-export default Signup;
+export default Login;
