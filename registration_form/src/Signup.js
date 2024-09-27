@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import SignupValidation from "./Validation";
 import axios from "axios";
@@ -13,6 +13,7 @@ const Signup = () => {
     password: "",
   });
   const [error, setError] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
   const navigate = useNavigate();
   const handleChange = (event) => {
     setValues((prev) => ({
@@ -20,29 +21,30 @@ const Signup = () => {
       [event.target.name]: [event.target.value],
     }));
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setError(SignupValidation(values));
-    if (
-      error.first_name === "" &&
-      error.last_name === "" &&
-      error.email === "" &&
-      error.password === ""
-    ) {
+    setIsSubmit(true);
+  };
+
+  useEffect(() => {
+    if (Object.keys(error).length == 0 && isSubmit) {
       axios
         .post("https://yt5k4d-8080.csb.app/signup", values)
         .then((res) => {
           navigate("/");
         })
         .catch((err) => console.log(err));
+      console.log("Signed Successfully");
+      console.log(values);
     }
-    event.target.reset();
-  };
+  }, [error]);
 
   return (
     <div className="signup_container bg-primary bg-gradient">
       <div className="signup_box bg-light-subtle">
-        <form onSubmit={handleSubmit}>
+        <form action="" onSubmit={handleSubmit}>
           <div className="mb-3">
             <label htmlFor="first_name" className="form-label">
               First Name
@@ -51,12 +53,10 @@ const Signup = () => {
               type="text"
               className="form-control"
               name="first_name"
-              placeholder="Yash"
+              placeholder="First Name"
               onChange={handleChange}
             />
-            {error.first_name && (
-              <span className="text-danger">{error.first_name}</span>
-            )}
+            <span className="text-danger">{error.first_name}</span>
           </div>
           <div className="mb-3">
             <label htmlFor="last_name" className="form-label">
@@ -66,12 +66,10 @@ const Signup = () => {
               type="text"
               className="form-control"
               name="last_name"
-              placeholder="Bajoria"
+              placeholder="Last Name"
               onChange={handleChange}
             />
-            {error.last_name && (
-              <span className="text-danger">{error.last_name}</span>
-            )}
+            <span className="text-danger">{error.last_name}</span>
           </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
@@ -81,10 +79,10 @@ const Signup = () => {
               type="email"
               className="form-control"
               name="email"
-              placeholder="name@example.com"
+              placeholder="Email"
               onChange={handleChange}
             />
-            {error.email && <span className="text-danger">{error.email}</span>}
+            <span className="text-danger">{error.email}</span>
           </div>
           <div className="mb-3">
             <label htmlFor="password" className="form-label">
@@ -94,12 +92,10 @@ const Signup = () => {
               type="password"
               className="form-control"
               name="password"
-              placeholder="**************"
+              placeholder="Password"
               onChange={handleChange}
             />
-            {error.password && (
-              <span className="text-danger">{error.password}</span>
-            )}
+            <span className="text-danger">{error.password}</span>
           </div>
           <div className="mb-3">
             <button type="submit" className="btn btn-success w-100 mb-1">

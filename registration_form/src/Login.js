@@ -1,47 +1,76 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import LoginValidation from "./Validation";
+import { LoginValidation } from "./Validation";
 import axios from "axios";
-import Signup from "./Signup";
+import Login from "./Login";
 import "./App.css";
 
-const Login = () => {
+const Signup = () => {
   const [values, setValues] = useState({
+    first_name: "",
+    last_name: "",
     email: "",
     password: "",
   });
   const [error, setError] = useState({});
+  const [isSubmit, setIsSubmit] = useState(false);
   const navigate = useNavigate();
-
   const handleChange = (event) => {
     setValues((prev) => ({
       ...prev,
       [event.target.name]: [event.target.value],
     }));
   };
+
   const handleSubmit = (event) => {
     event.preventDefault();
     setError(LoginValidation(values));
+    setIsSubmit(true);
+  };
 
-    if (error.email === "" && error.password === "") {
+  useEffect(() => {
+    if (Object.keys(error).length == 0 && isSubmit) {
       axios
         .post("https://yt5k4d-8080.csb.app/login", values)
         .then((res) => {
-          if (res.data === "Success") {
-            navigate("/");
-          } else {
-            alert("No Record Exist");
-          }
+          navigate("/");
         })
         .catch((err) => console.log(err));
+      console.log("Logged in Successfully");
+      console.log(values);
     }
-    event.target.reset();
-  };
+  }, [error]);
 
   return (
     <div className="signup_container bg-primary bg-gradient">
       <div className="signup_box bg-light-subtle">
         <form onSubmit={handleSubmit}>
+          <div className="mb-3">
+            <label htmlFor="first_name" className="form-label">
+              First Name
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="first_name"
+              placeholder="Yash"
+              onChange={handleChange}
+            />
+            <span className="text-danger">{error.first_name}</span>
+          </div>
+          <div className="mb-3">
+            <label htmlFor="last_name" className="form-label">
+              Last Name
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              name="last_name"
+              placeholder="Bajoria"
+              onChange={handleChange}
+            />
+            <span className="text-danger">{error.last_name}</span>
+          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email address
@@ -50,7 +79,7 @@ const Login = () => {
               type="email"
               className="form-control"
               name="email"
-              placeholder="name@example.com"
+              placeholder="Email"
               onChange={handleChange}
             />
             {error.email && <span className="text-danger">{error.email}</span>}
@@ -63,7 +92,7 @@ const Login = () => {
               type="password"
               className="form-control"
               name="password"
-              placeholder="**************"
+              placeholder="Password"
               onChange={handleChange}
             />
             {error.password && (
@@ -71,18 +100,19 @@ const Login = () => {
             )}
           </div>
           <div className="mb-3">
-            <button type="submit" className="btn btn-success w-100">
+            <button type="submit" className="btn btn-success w-100 mb-1">
               Submit
             </button>
-            <div className="mt-1">
-              <input type="checkbox" /> You agree to our terms and Conditions
-            </div>
+            <p>
+              <input type="checkbox" className="border" /> You agree to our
+              terms and Conditions
+            </p>
             <Link
-              to="/signup"
-              className="btn btn-default bg-light mt-3 border text-decoration-none w-100"
-              element={<Signup />}
+              to="/login"
+              className="btn btn-default bg-light border text-decoration-none w-100"
+              element={<Login />}
             >
-              Sign Up
+              Login
             </Link>
           </div>
         </form>
@@ -90,4 +120,4 @@ const Login = () => {
     </div>
   );
 };
-export default Login;
+export default Signup;
